@@ -11,6 +11,9 @@ class PaletteButton(State):
 
     def __init__(self):
 
+        # current choice is what mouse is colliding with 
+        self.current_choice = None
+
         # palette buttons
         self.paletteUpButton = Option()
         options_attributes["rect_colour"] = 'red'
@@ -50,12 +53,14 @@ class PaletteButton(State):
 
     def enter(self):
 
-        self.parent_node.camera.pos = (0,0)
-        self.parent_node.camera.focus = (0,0)
+        gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].win.get_width()//2,gameScreen.windows['palette'].win.get_height()//2)
 
     def update(self):
         
         self.submit_event_processing()
+
+        # camera tracking
+        gameScreen.windows['palette'].track_position()
 
         mousePos = pygame.mouse.get_pos()
 
@@ -81,10 +86,14 @@ class PaletteButton(State):
         self.paletteUpButton.update(surface_to_draw_on='palettebuttons')
         self.paletteDownButton.update(surface_to_draw_on='palettebuttons')
         
-        print(adjustedmousePos)
-        if self.paletteUpButton.hurtbox.collidepoint(adjustedmousePos):
-            sys.exit()
 
+        # collision check with buttons
+        if self.paletteUpButton.hurtbox.collidepoint(adjustedmousePos):
+            self.current_choice = 'Up'
+
+        if self.paletteDownButton.hurtbox.collidepoint(adjustedmousePos):
+            self.current_choice = 'Down'
+            
         # check which window the mouse is colliding with
         # use that windows offset value for a new mouse position
 
@@ -128,3 +137,25 @@ class PaletteButton(State):
 
             if event.key == pygame.K_ESCAPE:
                 self.emit('QUIT')
+
+
+
+        # handling mouse clicks
+        if event.type == pygame.MOUSEBUTTONDOWN:
+
+            if event.button == pygame.BUTTON_LEFT:
+                
+                if self.current_choice == 'Down':
+
+                    gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].focus[0],gameScreen.windows['palette'].focus[1]+200)
+
+
+         # handling mouse clicks
+        if event.type == pygame.MOUSEBUTTONDOWN:
+
+            if event.button == pygame.BUTTON_LEFT:
+                
+                if self.current_choice == 'Up':
+
+                    gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].focus[0],gameScreen.windows['palette'].focus[1]-200)                  
+
