@@ -123,9 +123,9 @@ class AnimatedSprite():
             if 'loaded_image' in SpriteCache[self.img_path]:
                 self.image = SpriteCache[self.img_path]['loaded_image']
 
-                if self.is_text:
-                    self.img_width = self.image.get_width()
-                    self.img_height = self.image.get_height()
+           
+                self.img_width = self.image.get_width()
+                self.img_height = self.image.get_height()
 
         # load image and store it in json if it does not exist
         elif self.img_path not in SpriteCache:
@@ -133,6 +133,8 @@ class AnimatedSprite():
             if not self.is_text:
                 SpriteCache[self.img_path] = {'loaded_image':pygame.image.load(self.img_path).convert_alpha()}
                 self.image = SpriteCache[self.img_path]['loaded_image']
+                self.img_width = self.image.get_width()
+                self.img_height = self.image.get_height()
 
             elif self.is_text:
                 self.create_text_image()
@@ -296,7 +298,7 @@ class AnimatedSprite():
         # self.hitbox.width,self.hitbox.height = self.sprite.get_width(),self.sprite.get_height()
 
 
-    def draw_surface(self,asset_type:str='surface',surface_to_draw_on='mainwindow',game_object_origin:str='game',is_animated:bool=False,
+    def draw_surface(self,asset_type:str='surface',surface_to_draw_on='mainwindow',game_object_origin:str='game',is_animated:bool=False,schedule_deletion:bool=True,
                        animation_length:int=0,position:tuple=(0,0),value:int=0,is_critical:bool=False,initial_width:int=0,initial_height:int=0,
                        zlayer:int=1,ignore_offset:bool=False):
 
@@ -339,7 +341,7 @@ class AnimatedSprite():
                                         'scale_factor_timer':1,
                                         'alpha':self.alpha,
                                         'ignore_offset':ignore_offset,
-                                        'schedule_deletion':True}
+                                        'schedule_deletion':schedule_deletion}
 
     def draw_hitbox(self,asset_type:str='rect',surface_to_draw_on:str='mainwindow',game_object_origin:str='game',
                   is_animated:bool=False,animation_length:int=0,position:tuple=(0,0),value:int=0,is_critical:bool=False,rect_colour:str='blue',
@@ -369,7 +371,7 @@ class AnimatedSprite():
                                                       'rect_colour':rect_colour,
                                                       'schedule_deletion':True}
 
-    def draw_rect(self,asset_type:str='rect',surface_to_draw_on:str='mainwindow',game_object_origin:str='game',
+    def draw_rect(self,asset_type:str='rect',surface_to_draw_on:str='mainwindow',game_object_origin:str='game',schedule_deletion:bool=True,
                   is_animated:bool=False,animation_length:int=0,position:tuple=(0,0),value:int=0,is_critical:bool=False,rect_colour:str='blue',
                   zlayer:int=1):
 
@@ -395,7 +397,7 @@ class AnimatedSprite():
                                                       'scale_factor_timer':1,
                                                       'alpha_value':255,
                                                       'rect_colour':rect_colour,
-                                                      'schedule_deletion':True}
+                                                      'schedule_deletion':schedule_deletion}
 
 
 class DrawMe():

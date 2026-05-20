@@ -11,7 +11,7 @@ class Artist():
         self.drawing_queue = {}
 
         self.pen = pygame.sysfont.SysFont("Arial",10)
-        self.damage_number_pen = pygame.sysfont.SysFont("Arial",24)
+        self.damage_number_pen = pygame.sysfont.SysFont("Arial",12)
 
         pass
 

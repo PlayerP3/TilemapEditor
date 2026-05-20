@@ -1,12 +1,14 @@
 import pygame,random,os,string,numpy,math
 from pygame.math import Vector2
 from screen import Window
-from camera import Camera
 from statemachine import StateMachine
 from States.Game.gameplay import Gameplay
 from States.Game.quit import Quit
 from States.Game.palettebutton import PaletteButton
 from States.Game.palette import Palette
+from States.Game.tilemap import Tilemap
+from States.Game.tilemapbutton import TilemapButton
+
 
 # from States.Game import gameover
 from eventsystem import eventprocessor
@@ -75,7 +77,9 @@ class Game(GameStateMachine):
         self.states = {'GAMEPLAY':Gameplay(),
                        'QUIT':Quit(),
                        'PALETTEBUTTON':PaletteButton(),
-                       'PALETTE':Palette()}
+                       'PALETTE':Palette(),
+                       'TILEMAP':Tilemap(),
+                       'TILEMAPBUTTON':TilemapButton()}
         
         # set parent node for player states
         for x in self.states:
@@ -185,7 +189,7 @@ class Game(GameStateMachine):
                                                         'scale_factor_timer':1,
                                                         'alpha_value':255,
                                                         'rect_colour':'blue',
-                                                        'schedule_deletion':True}
+                                                        'schedule_deletion':False}
                     
                     # add text
                     # # txt2 = player_Weapon.pen.render(f'Score: {player.score}',True,'blue')
@@ -214,7 +218,7 @@ class Game(GameStateMachine):
                                                         'scale_factor_timer':1,
                                                         'alpha_value':255,
                                                         'rect_colour':'blue',
-                                                        'schedule_deletion':True,
+                                                        'schedule_deletion':False,
                                                         'ignore_offset':False,
                                                         'alpha':255}
     

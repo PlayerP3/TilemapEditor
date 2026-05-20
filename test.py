@@ -15,4 +15,4 @@ for folder in os.listdir(path):
     #     subdirs = os.listdir(path_to_dir)
 
 
-print()
+print(12%6)
