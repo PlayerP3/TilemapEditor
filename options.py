@@ -40,6 +40,9 @@ class Option(AnimatedSprite):
         self.linked_obj = None
         self.linked_var = None
 
+        # acitve
+        self.is_active = True
+
         # list of functions we will execute
         self.extraProcessing = []
 
@@ -62,9 +65,12 @@ class Option(AnimatedSprite):
     # function to update some preoprty about the hud
     def update(self,surface_to_draw_on):
 
-        self.draw_surface(position=self.win_pos,ignore_offset=False,surface_to_draw_on=surface_to_draw_on)
-        # draw rect for debugging 
-        self.draw_rect(position=self.win_pos,surface_to_draw_on=surface_to_draw_on)
+        if self.is_active:
+
+            self.draw_surface(position=self.win_pos,ignore_offset=False,surface_to_draw_on=surface_to_draw_on)
+            
+            # draw rect for debugging 
+            self.draw_rect(position=self.win_pos,surface_to_draw_on=surface_to_draw_on)
 
   
 

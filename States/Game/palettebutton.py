@@ -18,46 +18,41 @@ class PaletteButton(State):
         self.paletteUpButton = Option()
         options_attributes["rect_colour"] = 'red'
         options_attributes["img_path"] = 'Up'
-        options_attributes["win_pos"] = [200,125]
+        options_attributes["win_pos"] = [50,125]
         self.paletteUpButton.init(attributes=options_attributes)
 
         self.paletteDownButton = Option()
         options_attributes["rect_colour"] = 'blue'
         options_attributes["img_path"] = 'Down'
-        options_attributes["win_pos"] = [400,125]
+        options_attributes["win_pos"] = [250,125]
         self.paletteDownButton.init(attributes=options_attributes)
 
+        self.paletteDirButton = Option()
+        options_attributes["rect_colour"] = 'blue'
+        options_attributes["img_path"] = 'Dir'
+        options_attributes["win_pos"] = [450,125]
+        self.paletteDirButton.init(attributes=options_attributes)
 
-        # actual palette options
-        # palette choices
-        sprites = '/Users/Player3/Desktop/Zombies/Sprites'
-        spritesPath = [x[0].replace("\\",'/') for x in os.walk(sprites)]
-        self.spritesOptions = []
 
-        for i in range(len(spritesPath)):
+        self.paletteSpritesButton = Option()
+        options_attributes["rect_colour"] = 'blue'
+        options_attributes["img_path"] = 'Sprites'
+        options_attributes["win_pos"] = [650,125]
+        self.paletteSpritesButton.init(attributes=options_attributes)
 
-            x = gameScreen.windows['palette'].win.get_width() //2
-            y = (i*100) + 50
-
-            optionsobj = Option()
-            options_attributes['img_path'] = spritesPath[i].split('/')[-1]
-            options_attributes['win_pos'] = [x,y]
-            options_attributes['name'] = spritesPath[i]
-
-            optionsobj.init(attributes=options_attributes)
-
-            self.spritesOptions.append(optionsobj)
 
 
         State.__init__(self)
 
     def enter(self):
-
-        gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].win.get_width()//2,gameScreen.windows['palette'].win.get_height()//2)
-
+        pass
+    
     def update(self):
         
         self.submit_event_processing()
+
+        # reset choice
+        self.current_choice = None
 
         # camera tracking
         gameScreen.windows['palette'].track_position()
@@ -70,21 +65,26 @@ class PaletteButton(State):
         # self.parent_node.windows.win.fill((200,0,0))
         # gameScreen.windows['mainwindow'].win.fill((200,0,0))
 
-        # draw tilemap
+
+        # fill windows
         gameScreen.windows['tilemap'].win.fill((200,100,100))
-
-        # draw palette
         gameScreen.windows['palette'].win.fill((0,100,100))
-        for opt in self.spritesOptions:
-            opt.update(surface_to_draw_on='palette')
-
-        # draw tilemap buttons
         gameScreen.windows['tilemapbuttons'].win.fill((150,222,10))
-
-        # draw palette buttons
         gameScreen.windows['palettebuttons'].win.fill((233,10,200))
+
+        # draw on windwos
         self.paletteUpButton.update(surface_to_draw_on='palettebuttons')
         self.paletteDownButton.update(surface_to_draw_on='palettebuttons')
+        self.paletteDirButton.update(surface_to_draw_on='palettebuttons')
+        self.paletteSpritesButton.update(surface_to_draw_on='palettebuttons')
+        
+
+        # draw palette based on what we are showing
+        # if current display is dirs
+        if self.parent_node.states['PALETTE'].currentDisplay == 'Dirs':
+    
+            for opt in self.parent_node.states['PALETTE'].myDirsOptions:
+                opt.update(surface_to_draw_on='palette')
         
 
         # collision check with buttons
@@ -93,22 +93,12 @@ class PaletteButton(State):
 
         if self.paletteDownButton.hurtbox.collidepoint(adjustedmousePos):
             self.current_choice = 'Down'
+
+        if self.paletteDirButton.hurtbox.collidepoint(adjustedmousePos):
+            self.current_choice = 'Dir'
             
-        # check which window the mouse is colliding with
-        # use that windows offset value for a new mouse position
-
-        # # engine.camera.track_position(window=engine.windows.win)
-        # # self.parent_node.camera.focus = self.parent_node.player.hurtbox.center
-        # # self.parent_node.camera.track_object_spring(window=self.parent_node.windows.win)
-
-        # # run game object behaviour
-        # self.parent_node.update_game_objects()
-
-        # # draw all objects onto the window
-        # self.parent_node.draw_objects()
-
-        # find new mouse pos
-        
+        if self.paletteSpritesButton.hurtbox.collidepoint(adjustedmousePos):
+            self.current_choice = 'Sprites'
 
         # render everything
         renderer.draw_objects()
@@ -116,11 +106,8 @@ class PaletteButton(State):
 
         # blit all wins onto screen
         gameScreen.screen.blit(gameScreen.windows['tilemap'].win,(0,0))
-
         gameScreen.screen.blit(gameScreen.windows['palette'].win,(1000,0))
-
         gameScreen.screen.blit(gameScreen.windows['tilemapbuttons'].win,(0,600))
-
         gameScreen.screen.blit(gameScreen.windows['palettebuttons'].win,(1000,800))
 
         # scale the window, and blit to display
@@ -128,6 +115,10 @@ class PaletteButton(State):
 
         # update display
         pygame.display.flip()
+
+        # if in palette button window
+        if gameScreen.windows['palette'].hurtbox.collidepoint(mousePos):
+            self.emit('PALETTE')
 
 
         # use true mouse pos to check for collision switchj
@@ -150,12 +141,19 @@ class PaletteButton(State):
                     gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].focus[0],gameScreen.windows['palette'].focus[1]+200)
 
 
-         # handling mouse clicks
-        if event.type == pygame.MOUSEBUTTONDOWN:
+                elif self.current_choice == 'Up':
 
-            if event.button == pygame.BUTTON_LEFT:
-                
-                if self.current_choice == 'Up':
+                    gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].focus[0],gameScreen.windows['palette'].focus[1]-200)         
 
-                    gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].focus[0],gameScreen.windows['palette'].focus[1]-200)                  
 
+                elif self.current_choice == 'Dir':
+
+                    self.parent_node.states['PALETTEBUTTON'].currentDisplay = 'Dirs'
+
+                    gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].win.get_width()//2,gameScreen.windows['palette'].win.get_height()//2)
+
+                elif self.current_choice == 'Sprites':
+
+                    self.parent_node.states['PALETTEBUTTON'].currentDisplay = 'Sprites'         
+
+                    gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].win.get_width()//2,gameScreen.windows['palette'].win.get_height()//2)
