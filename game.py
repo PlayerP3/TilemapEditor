@@ -155,7 +155,7 @@ class Game(GameStateMachine):
                         sprites.append(sprite)
 
             for s in sprites:
-                s.draw_surface(surface_to_draw_on='tilemap',position=s.hurtbox.topleft)
+                s.draw_surface(position=s.hurtbox.topleft)
             
 
 engine = Game()

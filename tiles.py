@@ -9,6 +9,7 @@ attributes = {
         "hurtbox_width":32,
         "hurtbox_height":32,
         "name":"PauseQuitHUD",
+        "surface_to_draw_on":"tilemap",
 
         "img_path":"QUIT",
         "img_width":10,
@@ -59,14 +60,17 @@ class Tile(AnimatedSprite):
         self.original_vars = {k:v for k,v in self.__dict__.items()}
 
     # function to update some preoprty about the hud
-    def update(self,surface_to_draw_on):
+    def update(self):
 
         if self.is_active:
 
-            self.draw_surface(position=self.win_pos,ignore_offset=False,surface_to_draw_on=surface_to_draw_on,schedule_deletion=True)
+
+            self.draw_surface(position=self.hurtbox.topleft,ignore_offset=False,schedule_deletion=True)
             
             # draw rect for debugging 
-            self.draw_rect(position=self.win_pos,surface_to_draw_on=surface_to_draw_on,schedule_deletion=True)
+            self.draw_rect(position=self.hurtbox.topleft,schedule_deletion=True)
+
+  
 
   
 

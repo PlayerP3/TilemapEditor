@@ -21,6 +21,7 @@ class TilemapButton(State):
         options_attributes["img_path"] = 'Left'
         options_attributes["win_pos"] = [50,50]
         options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "tilemapbuttons"
         self.LeftButton.init(attributes=options_attributes)
 
         self.RightButton = Option()
@@ -28,6 +29,8 @@ class TilemapButton(State):
         options_attributes["img_path"] = 'Right'
         options_attributes["win_pos"] = [50,150]
         options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "tilemapbuttons"
+
         self.RightButton.init(attributes=options_attributes)
 
 
@@ -36,6 +39,8 @@ class TilemapButton(State):
         options_attributes["img_path"] = 'Up'
         options_attributes["win_pos"] = [50,250]
         options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "tilemapbuttons"
+
         self.UpButton.init(attributes=options_attributes)
 
         self.DownButton = Option()
@@ -43,6 +48,8 @@ class TilemapButton(State):
         options_attributes["img_path"] = 'Down'
         options_attributes["win_pos"] = [50,350]
         options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "tilemapbuttons"
+
         self.DownButton.init(attributes=options_attributes)
 
 
@@ -77,10 +84,10 @@ class TilemapButton(State):
         gameScreen.windows['palettebuttons'].win.fill((233,10,200))
 
         # draw on windwos
-        self.parent_node.states['PALETTEBUTTON'].paletteUpButton.update(surface_to_draw_on='palettebuttons')
-        self.parent_node.states['PALETTEBUTTON'].paletteDownButton.update(surface_to_draw_on='palettebuttons')
-        self.parent_node.states['PALETTEBUTTON'].paletteDirButton.update(surface_to_draw_on='palettebuttons')
-        self.parent_node.states['PALETTEBUTTON'].paletteSpritesButton.update(surface_to_draw_on='palettebuttons')
+        self.parent_node.states['PALETTEBUTTON'].paletteUpButton.update()
+        self.parent_node.states['PALETTEBUTTON'].paletteDownButton.update()
+        self.parent_node.states['PALETTEBUTTON'].paletteDirButton.update()
+        self.parent_node.states['PALETTEBUTTON'].paletteSpritesButton.update()
         
 
         # draw palette based on what we are showing
@@ -88,19 +95,19 @@ class TilemapButton(State):
         if self.parent_node.states['PALETTE'].currentDisplay == 'Dirs':
     
             for opt in self.parent_node.states['PALETTE'].myDirsOptions:
-                opt.update(surface_to_draw_on='palette')
+                opt.update()
         
         elif self.parent_node.states['PALETTE'].currentDisplay == 'Sprites':
     
             for opt in self.parent_node.states['PALETTE'].spriteOptions[self.parent_node.states['PALETTE'].currentDir]:
-                opt.update(surface_to_draw_on='palette')
+                opt.update()
 
 
         # draw tilemap buttons
-        self.UpButton.update(surface_to_draw_on='tilemapbuttons')
-        self.DownButton.update(surface_to_draw_on='tilemapbuttons')
-        self.LeftButton.update(surface_to_draw_on='tilemapbuttons')
-        self.RightButton.update(surface_to_draw_on='tilemapbuttons')
+        self.UpButton.update()
+        self.DownButton.update()
+        self.LeftButton.update()
+        self.RightButton.update()
 
 
          # collision check with buttons
@@ -119,7 +126,7 @@ class TilemapButton(State):
 
         # draw tilempa rects
         for tile in self.parent_node.states['TILEMAP'].tiles:
-            tile.update(surface_to_draw_on='tilemap')
+            tile.update()
 
         # draw tilemap so fat
         self.parent_node.draw_tilemap()
@@ -170,22 +177,22 @@ class TilemapButton(State):
                 
                 if self.current_choice == 'Left':
 
-                    gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0] - 160,gameScreen.windows['tilemap'].focus[1])
+                    gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0] - 96,gameScreen.windows['tilemap'].focus[1])
 
 
                 elif self.current_choice == 'Right':
 
-                    gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0] + 160,gameScreen.windows['tilemap'].focus[1])   
+                    gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0] + 96,gameScreen.windows['tilemap'].focus[1])   
 
 
                 if self.current_choice == 'Up':
 
-                    gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0],gameScreen.windows['tilemap'].focus[1] - 160)
+                    gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0],gameScreen.windows['tilemap'].focus[1] - 96)
 
 
                 elif self.current_choice == 'Down':
 
-                    gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0],gameScreen.windows['tilemap'].focus[1] + 160)      
+                    gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0],gameScreen.windows['tilemap'].focus[1] + 96)      
 
 
                

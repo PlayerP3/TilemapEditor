@@ -51,6 +51,8 @@ class Palette(State):
             options_attributes['win_pos'] = [x,y]
             options_attributes['name'] = myDirsPath[i]
             options_attributes['is_text'] = True
+            options_attributes['surface_to_draw_on'] = "palette"
+
 
             optionsobj.init(attributes=options_attributes)
 
@@ -86,6 +88,7 @@ class Palette(State):
                 options_attributes['win_pos'] = [fromWindowOffsetX + (columnOffset*xChange) , fromWindowOffsetY + (yChange*rowOffset)]
                 options_attributes['name'] = sprites[j]
                 options_attributes['is_text'] = False
+                options_attributes['surface_to_draw_on'] = "palette"
     
 
                 spriteObj.init(attributes=options_attributes)
@@ -130,35 +133,35 @@ class Palette(State):
 
 
         # draw on windwos
-        self.parent_node.states['PALETTEBUTTON'].paletteUpButton.update(surface_to_draw_on='palettebuttons')
-        self.parent_node.states['PALETTEBUTTON'].paletteDownButton.update(surface_to_draw_on='palettebuttons')
-        self.parent_node.states['PALETTEBUTTON'].paletteDirButton.update(surface_to_draw_on='palettebuttons')
-        self.parent_node.states['PALETTEBUTTON'].paletteSpritesButton.update(surface_to_draw_on='palettebuttons')
+        self.parent_node.states['PALETTEBUTTON'].paletteUpButton.update()
+        self.parent_node.states['PALETTEBUTTON'].paletteDownButton.update()
+        self.parent_node.states['PALETTEBUTTON'].paletteDirButton.update()
+        self.parent_node.states['PALETTEBUTTON'].paletteSpritesButton.update()
 
         # if current display is dirs
         if self.currentDisplay == 'Dirs':
             for opt in self.myDirsOptions:
-                opt.update(surface_to_draw_on='palette')
+                opt.update()
                 if opt.hurtbox.collidepoint(adjustedmousePos):
                     self.currentChoice = opt.img_path
                     
         # if current display is sprites
         elif self.currentDisplay == 'Sprites':  
             for opt in self.spriteOptions[self.currentDir]:               
-                opt.update(surface_to_draw_on='palette')
+                opt.update()
                 if opt.hurtbox.collidepoint(adjustedmousePos):
                     self.currentChoice = opt.img_path
 
 
         # draw tilemap buttons
-        self.parent_node.states['TILEMAPBUTTON'].UpButton.update(surface_to_draw_on='tilemapbuttons')
-        self.parent_node.states['TILEMAPBUTTON'].DownButton.update(surface_to_draw_on='tilemapbuttons')
-        self.parent_node.states['TILEMAPBUTTON'].LeftButton.update(surface_to_draw_on='tilemapbuttons')
-        self.parent_node.states['TILEMAPBUTTON'].RightButton.update(surface_to_draw_on='tilemapbuttons')
+        self.parent_node.states['TILEMAPBUTTON'].UpButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].DownButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].LeftButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].RightButton.update()
 
         # draw tilempa rects
         for tile in self.parent_node.states['TILEMAP'].tiles:
-            tile.update(surface_to_draw_on='tilemap')
+            tile.update()
 
         # draw tilemap so fat
         self.parent_node.draw_tilemap()
@@ -214,5 +217,6 @@ class Palette(State):
                     elif self.currentDisplay == 'Sprites':
 
                         self.parent_node.currentSprite.img_path = self.currentChoice
+                        self.parent_node.currentSprite.surface_to_draw_on = 'tilemap'
                         self.parent_node.currentSprite.init_sprite()
 

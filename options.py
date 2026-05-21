@@ -9,6 +9,7 @@ options_attributes = {
         "hurtbox_width":75,
         "hurtbox_height":75,
         "name":"PauseQuitHUD",
+        "surface_to_draw_on":"palette",
 
         "img_path":"QUIT",
         "img_width":10,
@@ -63,14 +64,14 @@ class Option(AnimatedSprite):
         self.original_vars = {k:v for k,v in self.__dict__.items()}
 
     # function to update some preoprty about the hud
-    def update(self,surface_to_draw_on):
+    def update(self):
 
         if self.is_active:
 
-            self.draw_surface(position=self.win_pos,ignore_offset=False,surface_to_draw_on=surface_to_draw_on)
+            self.draw_surface(position=self.win_pos,ignore_offset=False)
             
             # draw rect for debugging 
-            self.draw_rect(position=self.win_pos,surface_to_draw_on=surface_to_draw_on)
+            self.draw_rect(position=self.win_pos)
 
   
 

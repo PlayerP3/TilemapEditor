@@ -40,6 +40,9 @@ class Window():
         self.extra_offset_x = 0
         self.extra_offset_y = 0
 
+        self.zoomOffsetX = 0
+        self.zoomOffsetY = 0
+
         self.pos = (0,0)
         self.focus = (0,0)
         self.movement = Vector2(0,0)
@@ -50,8 +53,11 @@ class Window():
         
     # change camera view based on what is being shown
     def track_position(self):
-        self.bg_offset_x = self.win.get_width()//2 - self.focus[0] + self.extra_offset_x
-        self.bg_offset_y = self.win.get_height()//2 - self.focus[1] + self.extra_offset_y
+        self.bg_offset_x = self.win.get_width()//2 - self.focus[0]*self.zoom + self.extra_offset_x
+        self.bg_offset_y = self.win.get_height()//2 - self.focus[1]*self.zoom + self.extra_offset_y
+
+        # self.zoomOffsetX = self.win.get_width()//2 * (1 - self.zoom)
+        # self.zoomOffsetY = self.win.get_width()//2 * (1 - self.zoom)
 
     # change camera based on obj
     def track_object(self,focus):

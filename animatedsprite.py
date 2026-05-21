@@ -4,6 +4,7 @@ from pygame.math import Vector2
 from artist import renderer
 from globs import delta
 from timer import Timer
+from screen import gameScreen
 
 GameSprites = {}
 TextSprites = {}
@@ -12,6 +13,7 @@ class AnimatedSprite():
 
     def __init__(self,zlayer_drawing:int=0,rect_colour:str='red',object_of_origin:str='Game',rect_width:float=23,rect_height:float=36,
                  hurtbox_width:float=23,hurtbox_height:float=36,sprite_offsetx:float=0,sprite_offsety:float=0,text_colour:str='green',
+                 surface_to_draw_on:str='win',
 
                  name:str='AnimatedSprite',img_path:str='Sprites/Cards/Hearts/1.png',img_width:int=32,img_width_scale:int=1,img_height:int=32,img_height_scale:int=1,
                  animation_delay:int=1,animation_speed:float=1,alpha:int=255,
@@ -29,6 +31,9 @@ class AnimatedSprite():
         # dealing with text
         self.is_text = is_text
 
+        # surf to draw on
+        self.surface_to_draw_on = surface_to_draw_on
+
         # set sprite
         self.sprite = None
         self.image = None
@@ -45,6 +50,9 @@ class AnimatedSprite():
 
         # this rect is used for movement and collision
         self.hurtbox = pygame.FRect(0,0,hurtbox_width,hurtbox_height)
+
+        self.hurtbox_width = hurtbox_width
+        self.hurtbox_height = hurtbox_height
 
         # hitbox is used for sprite drawing/otherstuff
         # self.hitbox = pygame.FRect(0,0,rect_width,rect_height)
@@ -101,8 +109,8 @@ class AnimatedSprite():
     def load_sprite_sheet(self):
         
         # determine scaled img width and height
-        scaled_width = int(self.img_width*self.img_width_scale*1)
-        scaled_height = int(self.img_height*self.img_height_scale*1)
+        scaled_width = int(self.img_width*self.img_width_scale*gameScreen.windows[self.surface_to_draw_on].zoom)
+        scaled_height = int(self.img_height*self.img_height_scale*gameScreen.windows[self.surface_to_draw_on].zoom)
 
         sprite_collection = {}
 
@@ -131,6 +139,7 @@ class AnimatedSprite():
         elif self.img_path not in SpriteCache:
             
             if not self.is_text:
+                print(self.img_path)
                 SpriteCache[self.img_path] = {'loaded_image':pygame.image.load(self.img_path).convert_alpha()}
                 self.image = SpriteCache[self.img_path]['loaded_image']
                 self.img_width = self.image.get_width()
@@ -146,8 +155,8 @@ class AnimatedSprite():
         self.load_or_update_image()
            
         # determine scaled img width and height
-        scaled_width = int(self.img_width*self.img_width_scale*1)
-        scaled_height = int(self.img_height*self.img_height_scale*1)
+        scaled_width = int(self.img_width*self.img_width_scale*gameScreen.windows[self.surface_to_draw_on].zoom)
+        scaled_height = int(self.img_height*self.img_height_scale*gameScreen.windows[self.surface_to_draw_on].zoom)
 
         # get dimensions
         dimensions = f"({scaled_width},{scaled_height})"
@@ -206,8 +215,8 @@ class AnimatedSprite():
     def update_rect_and_mask(self,SpriteCache:dict=GameSprites):
 
         # determine scaled img width and height
-        scaled_width = int(self.img_width*self.img_width_scale*1)
-        scaled_height = int(self.img_height*self.img_height_scale*1)
+        scaled_width = int(self.img_width*self.img_width_scale*gameScreen.windows[self.surface_to_draw_on].zoom)
+        scaled_height = int(self.img_height*self.img_height_scale*gameScreen.windows[self.surface_to_draw_on].zoom)
 
         # get dimensions
         dimensions = f"({scaled_width},{scaled_height})"
@@ -225,7 +234,12 @@ class AnimatedSprite():
         self.mask = pygame.mask.from_surface(self.sprite)
         self.mask_img = self.mask.to_surface()
 
+        oldCenter = self.hurtbox.topleft
 
+        self.hurtbox.width = self.hurtbox_width*gameScreen.windows[self.surface_to_draw_on].zoom
+        self.hurtbox.height = self.hurtbox_height*gameScreen.windows[self.surface_to_draw_on].zoom
+
+        self.hurtbox.topleft = oldCenter
     
 
     def update_sprite(self,SpriteCache:dict=GameSprites):
@@ -237,7 +251,7 @@ class AnimatedSprite():
         self.resize_and_rotate_sprite()
 
         # animation_frames = list(self.sprite_collection[self.direction].keys())
-        animation_frames = list(SpriteCache[self.img_path][f"({int(self.img_width*self.img_width_scale*1)},{int(self.img_height*self.img_height_scale*1)})"][self.direction].keys())
+        animation_frames = list(SpriteCache[self.img_path][f"({int(self.img_width*self.img_width_scale*gameScreen.windows[self.surface_to_draw_on].zoom)},{int(self.img_height*self.img_height_scale*gameScreen.windows[self.surface_to_draw_on].zoom)})"][self.direction].keys())
 
         # sprite_index = (self.animation_count//self.animation_delay) % len(animation_frames)
 
@@ -262,8 +276,8 @@ class AnimatedSprite():
         self.load_or_update_image()
 
         # determine scaled img width and height
-        scaled_width = int(self.img_width*self.img_width_scale*1)
-        scaled_height = int(self.img_height*self.img_height_scale*1)
+        scaled_width = int(self.img_width*self.img_width_scale*gameScreen.windows[self.surface_to_draw_on].zoom)
+        scaled_height = int(self.img_height*self.img_height_scale*gameScreen.windows[self.surface_to_draw_on].zoom)
 
         
 
@@ -298,14 +312,14 @@ class AnimatedSprite():
         # self.hitbox.width,self.hitbox.height = self.sprite.get_width(),self.sprite.get_height()
 
 
-    def draw_surface(self,asset_type:str='surface',surface_to_draw_on='mainwindow',game_object_origin:str='game',is_animated:bool=False,schedule_deletion:bool=True,
+    def draw_surface(self,asset_type:str='surface',game_object_origin:str='game',is_animated:bool=False,schedule_deletion:bool=True,
                        animation_length:int=0,position:tuple=(0,0),value:int=0,is_critical:bool=False,initial_width:int=0,initial_height:int=0,
                        zlayer:int=1,ignore_offset:bool=False):
 
         # update sprite
         self.update_sprite()
 
-        position = (position[0]+self.sprite_offsetx,position[1]+self.sprite_offsety)
+        position = (position[0]+self.sprite_offsetx,position[1]+(self.sprite_offsety))
 
         pos_rect = None
 
@@ -324,7 +338,7 @@ class AnimatedSprite():
                                         'asset_to_draw':self.sprite,
                                         'asset_type':asset_type,
                                         'z_layer':self.zlayer_drawing,
-                                        'surface_to_draw_on':surface_to_draw_on,
+                                        'surface_to_draw_on':self.surface_to_draw_on,
                                         'game_object_origin':game_object_origin,
                                         'is_animated':is_animated,
                                         'animation_length':animation_length,
@@ -371,7 +385,7 @@ class AnimatedSprite():
                                                       'rect_colour':rect_colour,
                                                       'schedule_deletion':True}
 
-    def draw_rect(self,asset_type:str='rect',surface_to_draw_on:str='mainwindow',game_object_origin:str='game',schedule_deletion:bool=True,
+    def draw_rect(self,asset_type:str='rect',game_object_origin:str='game',schedule_deletion:bool=True,
                   is_animated:bool=False,animation_length:int=0,position:tuple=(0,0),value:int=0,is_critical:bool=False,rect_colour:str='blue',
                   zlayer:int=1):
 
@@ -380,7 +394,7 @@ class AnimatedSprite():
                                                       'asset_to_draw':self.hurtbox,
                                                       'asset_type':asset_type,
                                                       'z_layer':zlayer,
-                                                      'surface_to_draw_on':surface_to_draw_on,
+                                                      'surface_to_draw_on':self.surface_to_draw_on,
                                                       'game_object_origin':game_object_origin,
                                                       'is_animated':is_animated,
                                                       'animation_length':animation_length,

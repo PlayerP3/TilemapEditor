@@ -27,8 +27,9 @@ class Tilemap(State):
         self.currentLayerText.hurtbox.center = [150,125]
         self.currentLayerText.is_text = True
         self.currentLayerText.text_colour = 'blue'
+        self.currentLayerText.surface_to_draw_on = 'tilemapbuttons'
         self.currentLayerText.init_sprite()
-
+        
 
         
         # focus on 0 0
@@ -52,9 +53,10 @@ class Tilemap(State):
                 attributes["img_path"] = f'({pos[0]},{pos[1]})'
                 attributes['sprite_offsetx'] = 16
                 attributes['sprite_offsety'] = 16
+                attributes['surface_to_draw_on'] = "tilemap"
                 mytile.init(attributes=attributes)
 
-                mytile.update(surface_to_draw_on='tilemap')
+                # mytile.update()
 
                 self.tiles.append(mytile)
 
@@ -72,11 +74,17 @@ class Tilemap(State):
         gameScreen.windows['tilemap'].track_position()
 
         mousePos = pygame.mouse.get_pos()
-        adjustedmousePos = (mousePos[0] - gameScreen.windows['tilemap'].bg_offset_x, mousePos[1] - gameScreen.windows['tilemap'].bg_offset_y)
+        adjustedmousePos = ((mousePos[0]- gameScreen.windows['tilemap'].bg_offset_x)/gameScreen.windows['tilemap'].zoom, (mousePos[1] - gameScreen.windows['tilemap'].bg_offset_y)/gameScreen.windows['tilemap'].zoom)
 
+        
+
+        print(adjustedmousePos)
 
         # set currentile pos
         self.currentTilePos = ((adjustedmousePos[0]//32)*32,(adjustedmousePos[1]//32)*32)
+
+
+        # print(self.currentTilePos)
 
         # fill windows
         gameScreen.windows['tilemap'].win.fill((200,100,100))
@@ -85,20 +93,20 @@ class Tilemap(State):
         gameScreen.windows['palettebuttons'].win.fill((233,10,200))
 
         # draw on windwos
-        self.parent_node.states['PALETTEBUTTON'].paletteUpButton.update(surface_to_draw_on='palettebuttons')
-        self.parent_node.states['PALETTEBUTTON'].paletteDownButton.update(surface_to_draw_on='palettebuttons')
-        self.parent_node.states['PALETTEBUTTON'].paletteDirButton.update(surface_to_draw_on='palettebuttons')
-        self.parent_node.states['PALETTEBUTTON'].paletteSpritesButton.update(surface_to_draw_on='palettebuttons')
+        self.parent_node.states['PALETTEBUTTON'].paletteUpButton.update()
+        self.parent_node.states['PALETTEBUTTON'].paletteDownButton.update()
+        self.parent_node.states['PALETTEBUTTON'].paletteDirButton.update()
+        self.parent_node.states['PALETTEBUTTON'].paletteSpritesButton.update()
         
         # draw palette based on what we are showing
         # if current display is dirs
         if self.parent_node.states['PALETTE'].currentDisplay == 'Dirs': 
             for opt in self.parent_node.states['PALETTE'].myDirsOptions:
-                opt.update(surface_to_draw_on='palette')
+                opt.update()
      
         elif self.parent_node.states['PALETTE'].currentDisplay == 'Sprites':
             for opt in self.parent_node.states['PALETTE'].spriteOptions[self.parent_node.states['PALETTE'].currentDir]:
-                opt.update(surface_to_draw_on='palette')
+                opt.update()
 
 
         # TILEMAP
@@ -106,7 +114,7 @@ class Tilemap(State):
         if self.showTileGrid == 1:
             # draw rects on tilemap
             for tile in self.tiles:
-                tile.update(surface_to_draw_on='tilemap')
+                tile.update()
 
         # draw tilemap so fat
         self.parent_node.draw_tilemap()
@@ -114,7 +122,7 @@ class Tilemap(State):
 
         # draw current sprite
         self.parent_node.currentSprite.hurtbox.topleft = ((adjustedmousePos[0]//32)*32,(adjustedmousePos[1]//32)*32)
-        self.parent_node.currentSprite.draw_surface(surface_to_draw_on='tilemap',position=self.parent_node.currentSprite.hurtbox.topleft)
+        self.parent_node.currentSprite.draw_surface(position=self.parent_node.currentSprite.hurtbox.topleft)
         
 
 
@@ -123,10 +131,10 @@ class Tilemap(State):
         
 
         # draw tilemap buttons
-        self.parent_node.states['TILEMAPBUTTON'].UpButton.update(surface_to_draw_on='tilemapbuttons')
-        self.parent_node.states['TILEMAPBUTTON'].DownButton.update(surface_to_draw_on='tilemapbuttons')
-        self.parent_node.states['TILEMAPBUTTON'].LeftButton.update(surface_to_draw_on='tilemapbuttons')
-        self.parent_node.states['TILEMAPBUTTON'].RightButton.update(surface_to_draw_on='tilemapbuttons')
+        self.parent_node.states['TILEMAPBUTTON'].UpButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].DownButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].LeftButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].RightButton.update()
 
         # render everything
         renderer.draw_objects()
@@ -172,6 +180,17 @@ class Tilemap(State):
             if event.key == pygame.K_0:
                 self.showTileGrid *= -1
 
+            if event.key == pygame.K_r:
+                self.parent_node.currentSprite.direction += 90
+
+            if event.key == pygame.K_z:
+                gameScreen.windows['tilemap'].zoom += 1
+
+            if event.key == pygame.K_x:
+                gameScreen.windows['tilemap'].zoom -= 1
+                gameScreen.windows['tilemap'].zoom = max(0,gameScreen.windows['tilemap'].zoom)
+
+
         # handling mouse clicks
         if event.type == pygame.MOUSEBUTTONDOWN:
 
@@ -206,6 +225,8 @@ class Tilemap(State):
         newSprite.zlayer_drawing = self.currentLayer
         newSprite.vertice = 'topleft'
         newSprite.hurtbox.topleft = self.currentTilePos
+        newSprite.direction = self.parent_node.currentSprite.direction
+        newSprite.surface_to_draw_on = 'tilemap'
 
         # add tile and its stats 
         self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"] = {'AnimatedSprite':newSprite}
@@ -225,7 +246,7 @@ class Tilemap(State):
     def draw_layer_number(self):
         self.currentLayerText.img_path = f'Current Layer = {self.currentLayer}'
         self.currentLayerText.init_sprite()
-        self.currentLayerText.draw_surface(surface_to_draw_on='tilemapbuttons',position=self.currentLayerText.hurtbox.center)
+        self.currentLayerText.draw_surface(position=self.currentLayerText.hurtbox.center)
 
 
     

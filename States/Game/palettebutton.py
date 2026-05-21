@@ -20,6 +20,8 @@ class PaletteButton(State):
         options_attributes["img_path"] = 'Up'
         options_attributes["win_pos"] = [50,125]
         options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "palettebuttons"
+
         self.paletteUpButton.init(attributes=options_attributes)
 
         self.paletteDownButton = Option()
@@ -27,6 +29,7 @@ class PaletteButton(State):
         options_attributes["img_path"] = 'Down'
         options_attributes["win_pos"] = [250,125]
         options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "palettebuttons"
         self.paletteDownButton.init(attributes=options_attributes)
 
         self.paletteDirButton = Option()
@@ -34,6 +37,7 @@ class PaletteButton(State):
         options_attributes["img_path"] = 'Dir'
         options_attributes["win_pos"] = [450,125]
         options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "palettebuttons"
         self.paletteDirButton.init(attributes=options_attributes)
 
 
@@ -42,6 +46,7 @@ class PaletteButton(State):
         options_attributes["img_path"] = 'Sprites'
         options_attributes["win_pos"] = [650,125]
         options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "palettebuttons"
         self.paletteSpritesButton.init(attributes=options_attributes)
 
 
@@ -77,10 +82,10 @@ class PaletteButton(State):
         gameScreen.windows['palettebuttons'].win.fill((233,10,200))
 
         # draw on windwos
-        self.paletteUpButton.update(surface_to_draw_on='palettebuttons')
-        self.paletteDownButton.update(surface_to_draw_on='palettebuttons')
-        self.paletteDirButton.update(surface_to_draw_on='palettebuttons')
-        self.paletteSpritesButton.update(surface_to_draw_on='palettebuttons')
+        self.paletteUpButton.update()
+        self.paletteDownButton.update()
+        self.paletteDirButton.update()
+        self.paletteSpritesButton.update()
         
 
         # draw palette based on what we are showing
@@ -88,12 +93,12 @@ class PaletteButton(State):
         if self.parent_node.states['PALETTE'].currentDisplay == 'Dirs':
     
             for opt in self.parent_node.states['PALETTE'].myDirsOptions:
-                opt.update(surface_to_draw_on='palette')
+                opt.update()
         
         elif self.parent_node.states['PALETTE'].currentDisplay == 'Sprites':
     
             for opt in self.parent_node.states['PALETTE'].spriteOptions[self.parent_node.states['PALETTE'].currentDir]:
-                opt.update(surface_to_draw_on='palette')
+                opt.update()
 
 
         # collision check with buttons
@@ -111,14 +116,14 @@ class PaletteButton(State):
 
 
         # draw tilemap buttons
-        self.parent_node.states['TILEMAPBUTTON'].UpButton.update(surface_to_draw_on='tilemapbuttons')
-        self.parent_node.states['TILEMAPBUTTON'].DownButton.update(surface_to_draw_on='tilemapbuttons')
-        self.parent_node.states['TILEMAPBUTTON'].LeftButton.update(surface_to_draw_on='tilemapbuttons')
-        self.parent_node.states['TILEMAPBUTTON'].RightButton.update(surface_to_draw_on='tilemapbuttons')
+        self.parent_node.states['TILEMAPBUTTON'].UpButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].DownButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].LeftButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].RightButton.update()
 
         # draw tilempa rects
         for tile in self.parent_node.states['TILEMAP'].tiles:
-            tile.update(surface_to_draw_on='tilemap')
+            tile.update()
 
         # draw tilemap so fat
         self.parent_node.draw_tilemap()

@@ -67,7 +67,7 @@ class Artist():
                     adjusted_position = (0,0)
 
                     if not ZlayerSortedDrawingQueue[unique_id]['ignore_offset']:
-                        adjusted_position = (ZlayerSortedDrawingQueue[unique_id]['position_rect'].x + gameScreen.windows[surf].bg_offset_x, ZlayerSortedDrawingQueue[unique_id]['position_rect'].y +  gameScreen.windows[surf].bg_offset_y)
+                        adjusted_position = ((ZlayerSortedDrawingQueue[unique_id]['position_rect'].x*gameScreen.windows[surf].zoom + gameScreen.windows[surf].bg_offset_x), (ZlayerSortedDrawingQueue[unique_id]['position_rect'].y*gameScreen.windows[surf].zoom +gameScreen.windows[surf].bg_offset_y))
 
                     elif ZlayerSortedDrawingQueue[unique_id]['ignore_offset']:
                         adjusted_position = (ZlayerSortedDrawingQueue[unique_id]['position_rect'].x +  gameScreen.windows[surf].win.get_width()//2, ZlayerSortedDrawingQueue[unique_id]['position_rect'].y +  gameScreen.windows[surf].win.get_height()//2)
@@ -89,10 +89,11 @@ class Artist():
                 # if what we are drawing is going to be a rect
                 elif ZlayerSortedDrawingQueue[unique_id]['asset_type'] == 'rect':
 
-                    adjusted_position_rect = pygame.FRect(ZlayerSortedDrawingQueue[unique_id]['asset_to_draw'].x + gameScreen.windows[surf].bg_offset_x,
-                    ZlayerSortedDrawingQueue[unique_id]['asset_to_draw'].y +  gameScreen.windows[surf].bg_offset_y,
+                    adjusted_position_rect = pygame.FRect(ZlayerSortedDrawingQueue[unique_id]['asset_to_draw'].x*gameScreen.windows[surf].zoom + gameScreen.windows[surf].bg_offset_x ,
+                    ZlayerSortedDrawingQueue[unique_id]['asset_to_draw'].y*gameScreen.windows[surf].zoom +  gameScreen.windows[surf].bg_offset_y,
                     ZlayerSortedDrawingQueue[unique_id]['asset_to_draw'].width,
                     ZlayerSortedDrawingQueue[unique_id]['asset_to_draw'].height)
+                    
 
                     # draw rects
                     pygame.draw.rect(gameScreen.windows[surf].win,ZlayerSortedDrawingQueue[unique_id]['rect_colour'],adjusted_position_rect,1)
