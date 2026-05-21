@@ -87,28 +87,17 @@ class Game(GameStateMachine):
         
         self.state = self.states['GAMEPLAY']
 
-        # for creating dmg numbers
-        self.display_dmg_num = -1
 
-        # astar graph,coors are key, and Node object is value
-        self.astar_graph = {}
-
-        # path cache
-        self.path_cache = {}
         self.tile_size = 32
-        self.tiles = {}
-        self.accessible_tiles = []
 
-        
-        # tile display
-        self.display_tiles = -1
-
-        # sine wave testing
-        self.sinrect = pygame.FRect(-120,0,10,10)
-        self.sinrect.center = (-120,0)
-        self.sintime = 0
-
+        self.currentSprite = None
  
+        # tilemap config
+        self.tilemap = {}
+        self.tilemapEntryID = 0
+
+
+        # so we have a {imgpath,rectwidthheight,zlayer_drawing,position,class}
         # pen 
         self.pen = pygame.sysfont.SysFont("Arial",10)
         self.damage_number_pen = pygame.sysfont.SysFont("Arial",24)
@@ -151,77 +140,22 @@ class Game(GameStateMachine):
                 self.object_positions[coors].append(object_to_add)
 
 
-    def display_game_tiles(self,tile_size:int=32):
+    def draw_tilemap(self):
 
-        
-        if self.display_tiles == 1:
+        if self.tilemap:
 
-            # first we need the width and height of the screen
-            # then we need ot know where the center is , in future the center can change depending on which room in the map we are in 
-            view_rect = self.windows.win.get_rect(center = (0,0))
+            # get all the sprites 
+            sprites = []
 
-            for x in range(view_rect.left,view_rect.right,tile_size):
-                for y in range(view_rect.top,view_rect.bottom,tile_size):
+            for layer,posinfo in self.tilemap.items():
 
-                    pos = (x,y)
-                
-                    rect = pygame.FRect(*pos,32,32)
+                for pos,spriteinfo in posinfo.items():
 
+                    for nom,sprite in spriteinfo.items():
+                        sprites.append(sprite)
 
-                    self.drawing_queue[f"{id(rect)}_rect"] = {'game_object':None,
-                                                        'asset_to_draw':rect,
-                                                        'asset_type':'rect',
-                                                        'z_layer':2,
-                                                        'surface_to_draw_on':self.windows.win,
-                                                        'game_object_origin':'game',
-                                                        'is_animated':False,
-                                                        'animation_length':0,
-                                                        'animation_timer':0,
-                                                        'position':pos,
-                                                        'position_rect':None,
-                                                        'value':0,
-                                                        'is_critical':False,
-                                                        'sin_waveY':math.radians(90),
-                                                        'sin_waveX':0,
-                                                        'sin_waveX_movement':random.choice(['positive','negative']),
-                                                        'initial_width':2,
-                                                        'initial_height':2,
-                                                        'scale_factor_timer':1,
-                                                        'alpha_value':255,
-                                                        'rect_colour':'blue',
-                                                        'schedule_deletion':False}
-                    
-                    # add text
-                    # # txt2 = player_Weapon.pen.render(f'Score: {player.score}',True,'blue')
-                    txt = self.pen.render(f'({pos[0]},{pos[1]})',True,'blue')
-
-                    txt_rect = txt.get_frect(center=(pos[0]+(tile_size//2),pos[1]+(tile_size//2)))
-            
-                    self.drawing_queue[f"{id(txt_rect)}_rect"] = {'game_object':None,
-                                                        'asset_to_draw':txt,
-                                                        'asset_type':'surface',
-                                                        'z_layer':2,
-                                                        'surface_to_draw_on':self.windows.win,
-                                                        'game_object_origin':'game',
-                                                        'is_animated':False,
-                                                        'animation_length':0,
-                                                        'animation_timer':0,
-                                                        'position':txt_rect.center,
-                                                        'position_rect':txt_rect,
-                                                        'value':0,
-                                                        'is_critical':False,
-                                                        'sin_waveY':math.radians(90),
-                                                        'sin_waveX':0,
-                                                        'sin_waveX_movement':random.choice(['positive','negative']),
-                                                        'initial_width':2,
-                                                        'initial_height':2,
-                                                        'scale_factor_timer':1,
-                                                        'alpha_value':255,
-                                                        'rect_colour':'blue',
-                                                        'schedule_deletion':False,
-                                                        'ignore_offset':False,
-                                                        'alpha':255}
-    
+            for s in sprites:
+                s.draw_surface(surface_to_draw_on='tilemap',position=s.hurtbox.topleft)
             
 
 engine = Game()

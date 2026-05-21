@@ -16,3 +16,13 @@ for folder in os.listdir(path):
 
 
 print(12%6)
+
+y = (30,30)
+
+print(f'{y}')
+
+v = {'2':{'a':{'blma':'boom'}}}
+
+del v['2']['a']
+
+print(v)

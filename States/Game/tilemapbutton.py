@@ -121,6 +121,11 @@ class TilemapButton(State):
         for tile in self.parent_node.states['TILEMAP'].tiles:
             tile.update(surface_to_draw_on='tilemap')
 
+        # draw tilemap so fat
+        self.parent_node.draw_tilemap()
+
+        self.parent_node.states['TILEMAP'].draw_layer_number()
+
         # render everything
         renderer.draw_objects()
 

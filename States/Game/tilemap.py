@@ -7,14 +7,30 @@ from artist import renderer
 from screen import gameScreen
 from options import *
 from tiles import Tile,attributes
+from animatedsprite import AnimatedSprite
 
 class Tilemap(State):
 
     def __init__(self):
 
         # current choice is what mouse is colliding with 
-        self.current_choice = None
+        self.currentTilePos = None
+        self.currentLayer = 0
 
+        # showing view grid or not
+        self.showTileGrid = 1
+
+
+        # palette buttons
+        self.currentLayerText = AnimatedSprite()
+        self.currentLayerText.img_path = f'Current Layer = {self.currentLayer}'
+        self.currentLayerText.hurtbox.center = [150,125]
+        self.currentLayerText.is_text = True
+        self.currentLayerText.text_colour = 'blue'
+        self.currentLayerText.init_sprite()
+
+
+        
         # focus on 0 0
         gameScreen.windows['tilemap'].focus = (0,0)
         gameScreen.windows['tilemap'].track_position()
@@ -22,7 +38,7 @@ class Tilemap(State):
         self.tiles = []
 
         # create tiles
-        view_rect = pygame.Rect(0,0,3200,3200)
+        view_rect = pygame.Rect(0,0,1600,1600)
         view_rect.center = (0,0)
 
         for x in range(view_rect.left,view_rect.right,32):
@@ -45,21 +61,22 @@ class Tilemap(State):
         State.__init__(self)
 
     def enter(self):
+        self.currentTilePos = None
         pass
 
     def update(self):
         
         self.submit_event_processing()
 
-        # reset choice
-        self.current_choice = None
-
         # camera tracking
         gameScreen.windows['tilemap'].track_position()
 
         mousePos = pygame.mouse.get_pos()
-
         adjustedmousePos = (mousePos[0] - gameScreen.windows['tilemap'].bg_offset_x, mousePos[1] - gameScreen.windows['tilemap'].bg_offset_y)
+
+
+        # set currentile pos
+        self.currentTilePos = ((adjustedmousePos[0]//32)*32,(adjustedmousePos[1]//32)*32)
 
         # fill windows
         gameScreen.windows['tilemap'].win.fill((200,100,100))
@@ -83,9 +100,27 @@ class Tilemap(State):
             for opt in self.parent_node.states['PALETTE'].spriteOptions[self.parent_node.states['PALETTE'].currentDir]:
                 opt.update(surface_to_draw_on='palette')
 
-        # draw rects on tilemap
-        for tile in self.tiles:
-            tile.update(surface_to_draw_on='tilemap')
+
+        # TILEMAP
+
+        if self.showTileGrid == 1:
+            # draw rects on tilemap
+            for tile in self.tiles:
+                tile.update(surface_to_draw_on='tilemap')
+
+        # draw tilemap so fat
+        self.parent_node.draw_tilemap()
+
+
+        # draw current sprite
+        self.parent_node.currentSprite.hurtbox.topleft = ((adjustedmousePos[0]//32)*32,(adjustedmousePos[1]//32)*32)
+        self.parent_node.currentSprite.draw_surface(surface_to_draw_on='tilemap',position=self.parent_node.currentSprite.hurtbox.topleft)
+        
+
+
+        self.draw_layer_number()
+        
+        
 
         # draw tilemap buttons
         self.parent_node.states['TILEMAPBUTTON'].UpButton.update(surface_to_draw_on='tilemapbuttons')
@@ -128,31 +163,69 @@ class Tilemap(State):
             if event.key == pygame.K_ESCAPE:
                 self.emit('QUIT')
 
+            if event.key == pygame.K_UP:
+                self.currentLayer += 1
 
+            if event.key == pygame.K_DOWN:
+                self.currentLayer -= 1
+
+            if event.key == pygame.K_0:
+                self.showTileGrid *= -1
 
         # handling mouse clicks
         if event.type == pygame.MOUSEBUTTONDOWN:
 
             if event.button == pygame.BUTTON_LEFT:
                 
-                if self.current_choice == 'Down':
+                self.add_tile()
 
-                    gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].focus[0],gameScreen.windows['palette'].focus[1]+200)
-
-
-                elif self.current_choice == 'Up':
-
-                    gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].focus[0],gameScreen.windows['palette'].focus[1]-200)         
+            if event.button == pygame.BUTTON_RIGHT:
+                
+                self.remove_tile()
 
 
-                elif self.current_choice == 'Dir':
+    
+    def add_tile(self):
 
-                    self.parent_node.states['PALETTE'].currentDisplay = 'Dirs'
+        if self.currentLayer not in self.parent_node.tilemap:
+            self.parent_node.tilemap[self.currentLayer] = {}
 
-                    gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].win.get_width()//2,gameScreen.windows['palette'].win.get_height()//2)
+        if f"{self.currentTilePos}" not in self.parent_node.tilemap[self.currentLayer]:
 
-                elif self.current_choice == 'Sprites':
+            self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"] = {}
 
-                    self.parent_node.states['PALETTE'].currentDisplay = 'Sprites'         
+        # if there is already a tile at that location
+        if self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"]:
+            return
+        
 
-                    gameScreen.windows['palette'].focus = (gameScreen.windows['palette'].win.get_width()//2,gameScreen.windows['palette'].win.get_height()//2)
+        # create new obj
+        newSprite = AnimatedSprite()
+
+        newSprite.img_path = self.parent_node.currentSprite.img_path
+        newSprite.zlayer_drawing = self.currentLayer
+        newSprite.vertice = 'topleft'
+        newSprite.hurtbox.topleft = self.currentTilePos
+
+        # add tile and its stats 
+        self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"] = {'AnimatedSprite':newSprite}
+
+    def remove_tile(self):
+
+        if self.currentLayer in self.parent_node.tilemap:
+           
+            if f"{self.currentTilePos}" in self.parent_node.tilemap[self.currentLayer]:
+
+                # if there is already a tile at that location
+                del self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"]
+                
+            if not self.parent_node.tilemap[self.currentLayer]:
+                del self.parent_node.tilemap[self.currentLayer]
+
+    def draw_layer_number(self):
+        self.currentLayerText.img_path = f'Current Layer = {self.currentLayer}'
+        self.currentLayerText.init_sprite()
+        self.currentLayerText.draw_surface(surface_to_draw_on='tilemapbuttons',position=self.currentLayerText.hurtbox.center)
+
+
+    

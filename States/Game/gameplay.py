@@ -59,10 +59,6 @@ class Gameplay(State):
 
         mousePos = pygame.mouse.get_pos()
 
-        print(mousePos) 
-        print(gameScreen.fullscreen_width,gameScreen.fullscreen_height)
-
-
         # fill window
         # self.parent_node.windows.win.fill((200,0,0))
         # gameScreen.windows['mainwindow'].win.fill((200,0,0))

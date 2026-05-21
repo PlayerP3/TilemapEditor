@@ -147,7 +147,7 @@ class Palette(State):
             for opt in self.spriteOptions[self.currentDir]:               
                 opt.update(surface_to_draw_on='palette')
                 if opt.hurtbox.collidepoint(adjustedmousePos):
-                    self.currentChoice = opt.name
+                    self.currentChoice = opt.img_path
 
 
         # draw tilemap buttons
@@ -160,6 +160,10 @@ class Palette(State):
         for tile in self.parent_node.states['TILEMAP'].tiles:
             tile.update(surface_to_draw_on='tilemap')
 
+        # draw tilemap so fat
+        self.parent_node.draw_tilemap()
+
+        self.parent_node.states['TILEMAP'].draw_layer_number()
 
         # render everything
         renderer.draw_objects()
@@ -209,5 +213,6 @@ class Palette(State):
 
                     elif self.currentDisplay == 'Sprites':
 
-                        self.currentSprite = self.currentChoice
+                        self.parent_node.currentSprite.img_path = self.currentChoice
+                        self.parent_node.currentSprite.init_sprite()
 
