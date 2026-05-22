@@ -8,6 +8,7 @@ from States.Game.palettebutton import PaletteButton
 from States.Game.palette import Palette
 from States.Game.tilemap import Tilemap
 from States.Game.tilemapbutton import TilemapButton
+from States.Game.definingattributes import DefiningAttributes
 
 
 # from States.Game import gameover
@@ -35,6 +36,8 @@ class GameStateMachine(StateMachine):
 
         if self.state.done:
             self.transition_to_next_state()
+
+        print(self.tilemap)
 
 class Game(GameStateMachine):
 
@@ -79,18 +82,20 @@ class Game(GameStateMachine):
                        'PALETTEBUTTON':PaletteButton(),
                        'PALETTE':Palette(),
                        'TILEMAP':Tilemap(),
-                       'TILEMAPBUTTON':TilemapButton()}
+                       'TILEMAPBUTTON':TilemapButton(),
+                       'DEFININGATTRIBUTES':DefiningAttributes()}
         
         # set parent node for player states
         for x in self.states:
             self.states[x].parent_node = self
         
-        self.state = self.states['GAMEPLAY']
+        self.state = self.states['PALETTE']
 
 
         self.tile_size = 32
 
         self.currentSprite = None
+        self.currentClass = 'BgTile'
  
         # tilemap config
         self.tilemap = {}
@@ -151,8 +156,7 @@ class Game(GameStateMachine):
 
                 for pos,spriteinfo in posinfo.items():
 
-                    for nom,sprite in spriteinfo.items():
-                        sprites.append(sprite)
+                    sprites.append(spriteinfo['AnimatedSprite'])
 
             for s in sprites:
                 s.draw_surface(position=s.hurtbox.topleft)

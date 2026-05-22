@@ -150,7 +150,7 @@ class PaletteButton(State):
         if gameScreen.windows['palette'].hurtbox.collidepoint(mousePos):
             self.emit('PALETTE')
 
-        elif gameScreen.windows['tilemap'].hurtbox.collidepoint(mousePos):
+        elif gameScreen.windows['tilemap'].hurtbox.collidepoint(mousePos) and self.parent_node.currentSprite:
             self.emit('TILEMAP')
 
         elif gameScreen.windows['tilemapbuttons'].hurtbox.collidepoint(mousePos):

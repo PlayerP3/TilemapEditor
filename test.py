@@ -26,3 +26,6 @@ v = {'2':{'a':{'blma':'boom'}}}
 del v['2']['a']
 
 print(v)
+
+y = 'cost:0'
+print(y.split(':'))

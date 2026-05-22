@@ -44,6 +44,8 @@ class Option(AnimatedSprite):
         # acitve
         self.is_active = True
 
+        self.storedValue = None
+
         # list of functions we will execute
         self.extraProcessing = []
 

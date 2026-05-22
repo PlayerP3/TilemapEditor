@@ -35,8 +35,8 @@ class Palette(State):
             if '.png' in ''.join(os.listdir(d)):
                 myDirsPath.append(d)
 
-        self.myDirsOptions = []
-        self.spriteOptions = {}
+        self.myDirsOptions = [] # options objects with name and img path as dir name
+        self.spriteOptions = {} # kv pair of dir name and option objects which stores actual sprite iomage paths
 
         for i in range(len(myDirsPath)):
 
@@ -185,7 +185,7 @@ class Palette(State):
         if gameScreen.windows['palettebuttons'].hurtbox.collidepoint(mousePos):
             self.emit('PALETTEBUTTON')
 
-        elif gameScreen.windows['tilemap'].hurtbox.collidepoint(mousePos):
+        elif gameScreen.windows['tilemap'].hurtbox.collidepoint(mousePos) and self.parent_node.currentSprite:
             self.emit('TILEMAP')
 
         elif gameScreen.windows['tilemapbuttons'].hurtbox.collidepoint(mousePos):

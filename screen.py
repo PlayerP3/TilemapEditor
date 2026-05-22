@@ -96,9 +96,12 @@ gameScreen.add_window('palette',707,800)
 gameScreen.add_window('tilemap',1000,600)
 gameScreen.add_window('tilemapbuttons',1000,467)
 gameScreen.add_window('palettebuttons',707,267)
+gameScreen.add_window('defineattributes',1707,1067)
+
 
 # set rects
 gameScreen.windows['tilemap'].hurtbox = pygame.Rect(0,0,1000,600)
 gameScreen.windows['palette'].hurtbox = pygame.Rect(1000,0,707,800)
 gameScreen.windows['tilemapbuttons'].hurtbox = pygame.Rect(0,600,1000,467)
 gameScreen.windows['palettebuttons'].hurtbox = pygame.Rect(1000,800,707,267)
+gameScreen.windows['defineattributes'].hurtbox = pygame.Rect(0,0,1707,1067)

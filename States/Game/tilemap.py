@@ -76,9 +76,6 @@ class Tilemap(State):
         mousePos = pygame.mouse.get_pos()
         adjustedmousePos = ((mousePos[0]- gameScreen.windows['tilemap'].bg_offset_x)/gameScreen.windows['tilemap'].zoom, (mousePos[1] - gameScreen.windows['tilemap'].bg_offset_y)/gameScreen.windows['tilemap'].zoom)
 
-        
-
-        print(adjustedmousePos)
 
         # set currentile pos
         self.currentTilePos = ((adjustedmousePos[0]//32)*32,(adjustedmousePos[1]//32)*32)
@@ -118,8 +115,7 @@ class Tilemap(State):
 
         # draw tilemap so fat
         self.parent_node.draw_tilemap()
-
-
+   
         # draw current sprite
         self.parent_node.currentSprite.hurtbox.topleft = ((adjustedmousePos[0]//32)*32,(adjustedmousePos[1]//32)*32)
         self.parent_node.currentSprite.draw_surface(position=self.parent_node.currentSprite.hurtbox.topleft)
@@ -168,6 +164,8 @@ class Tilemap(State):
 
         if event.type == pygame.KEYDOWN:
 
+            print(f'Just Pressed {event.unicode}')
+
             if event.key == pygame.K_ESCAPE:
                 self.emit('QUIT')
 
@@ -187,8 +185,18 @@ class Tilemap(State):
                 gameScreen.windows['tilemap'].zoom += 1
 
             if event.key == pygame.K_x:
+                
                 gameScreen.windows['tilemap'].zoom -= 1
-                gameScreen.windows['tilemap'].zoom = max(0,gameScreen.windows['tilemap'].zoom)
+                gameScreen.windows['tilemap'].zoom = max(1,gameScreen.windows['tilemap'].zoom)
+
+            if event.key == pygame.K_SPACE:
+
+                # givne layer and pos, if tile placed there 
+                if self.currentLayer in self.parent_node.tilemap:
+
+                    if f"{self.currentTilePos}" in self.parent_node.tilemap[self.currentLayer]:
+
+                        self.emit('DEFININGATTRIBUTES')
 
 
         # handling mouse clicks
@@ -229,7 +237,7 @@ class Tilemap(State):
         newSprite.surface_to_draw_on = 'tilemap'
 
         # add tile and its stats 
-        self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"] = {'AnimatedSprite':newSprite}
+        self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"] = {'AnimatedSprite':newSprite,'class':'BgTile'}
 
     def remove_tile(self):
 

@@ -5,6 +5,7 @@ from artist import renderer
 from globs import delta
 from timer import Timer
 from screen import gameScreen
+from pens import *
 
 GameSprites = {}
 TextSprites = {}
@@ -13,7 +14,7 @@ class AnimatedSprite():
 
     def __init__(self,zlayer_drawing:int=0,rect_colour:str='red',object_of_origin:str='Game',rect_width:float=23,rect_height:float=36,
                  hurtbox_width:float=23,hurtbox_height:float=36,sprite_offsetx:float=0,sprite_offsety:float=0,text_colour:str='green',
-                 surface_to_draw_on:str='win',
+                 surface_to_draw_on:str='win',penToUse='arial15',
 
                  name:str='AnimatedSprite',img_path:str='Sprites/Cards/Hearts/1.png',img_width:int=32,img_width_scale:int=1,img_height:int=32,img_height_scale:int=1,
                  animation_delay:int=1,animation_speed:float=1,alpha:int=255,
@@ -30,6 +31,7 @@ class AnimatedSprite():
 
         # dealing with text
         self.is_text = is_text
+        self.penToUse = penToUse
 
         # surf to draw on
         self.surface_to_draw_on = surface_to_draw_on
@@ -200,7 +202,7 @@ class AnimatedSprite():
         # load image and store it in json if it does not exist
         # elif self.img_path not in SpriteCache:
 
-        surf = renderer.damage_number_pen.render(f"{self.img_path}",True,self.text_colour)
+        surf = penHolder[self.penToUse].render(f"{self.img_path}",True,self.text_colour)
 
         GameSprites[self.img_path] = {'loaded_image':surf}
 
@@ -234,12 +236,12 @@ class AnimatedSprite():
         self.mask = pygame.mask.from_surface(self.sprite)
         self.mask_img = self.mask.to_surface()
 
-        oldCenter = self.hurtbox.topleft
+        # oldCenter = self.hurtbox.topleft
 
         self.hurtbox.width = self.hurtbox_width*gameScreen.windows[self.surface_to_draw_on].zoom
         self.hurtbox.height = self.hurtbox_height*gameScreen.windows[self.surface_to_draw_on].zoom
 
-        self.hurtbox.topleft = oldCenter
+        # self.hurtbox.topleft = oldCenter
     
 
     def update_sprite(self,SpriteCache:dict=GameSprites):
