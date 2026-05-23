@@ -8,6 +8,7 @@ from screen import gameScreen
 from options import *
 from tiles import Tile,attributes
 
+
 class TilemapButton(State):
 
     def __init__(self):
@@ -51,6 +52,15 @@ class TilemapButton(State):
         options_attributes['surface_to_draw_on'] = "tilemapbuttons"
 
         self.DownButton.init(attributes=options_attributes)
+
+        self.SaveButton = Option()
+        options_attributes["rect_colour"] = 'blue'
+        options_attributes["img_path"] = 'Save'
+        options_attributes["win_pos"] = [150,150]
+        options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "tilemapbuttons"
+
+        self.SaveButton.init(attributes=options_attributes)
 
 
         State.__init__(self)
@@ -108,6 +118,7 @@ class TilemapButton(State):
         self.DownButton.update()
         self.LeftButton.update()
         self.RightButton.update()
+        self.SaveButton.update()
 
 
          # collision check with buttons
@@ -185,14 +196,17 @@ class TilemapButton(State):
                     gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0] + 96,gameScreen.windows['tilemap'].focus[1])   
 
 
-                if self.current_choice == 'Up':
+                elif self.current_choice == 'Up':
 
                     gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0],gameScreen.windows['tilemap'].focus[1] - 96)
 
 
                 elif self.current_choice == 'Down':
 
-                    gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0],gameScreen.windows['tilemap'].focus[1] + 96)      
+                    gameScreen.windows['tilemap'].focus = (gameScreen.windows['tilemap'].focus[0],gameScreen.windows['tilemap'].focus[1] + 96)     
 
+                elif self.current_choice == 'Save':
 
-               
+                    # self.parent_node.save_tilemap()
+
+                    pass               

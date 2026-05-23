@@ -10,7 +10,14 @@ class Quit(State):
 
         State.__init__(self)
 
+    def enter(self):
+
+        self.parent_node.save_tilemap()
+
+
 
     def update(self):
 
         self.parent_node.drawing = False
+
+

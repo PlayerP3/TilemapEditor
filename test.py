@@ -29,3 +29,5 @@ print(v)
 
 y = 'cost:0'
 print(y.split(':'))
+
+print(180%360)

@@ -14,7 +14,7 @@ class DefiningAttributes(State):
         # current choice is what mouse is colliding with 
         self.current_choice = None
 
-        self.typingFor = False
+        self.currentAction = 'typing'
 
 
         # store key value pairs
@@ -33,6 +33,15 @@ class DefiningAttributes(State):
         self.currentPhrase.img_width_scale = 3
         self.currentPhrase.img_height_scale = 2
 
+        # what state youa re currently in
+        self.myActionButton = Option()
+        options_attributes["rect_colour"] = 'blue'
+        options_attributes["img_path"] = f'You are currently {self.currentAction}'
+        options_attributes["win_pos"] = [700,600]
+        options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "defineattributes"
+        self.myActionButton.init(attributes=options_attributes)
+
         # palette buttons
         self.submitButton = Option()
         options_attributes["rect_colour"] = 'red'
@@ -46,7 +55,7 @@ class DefiningAttributes(State):
         self.viewJSONButton = Option()
         options_attributes["rect_colour"] = 'blue'
         options_attributes["img_path"] = 'ViewJSON'
-        options_attributes["win_pos"] = [800,900]
+        options_attributes["win_pos"] = [1000,900]
         options_attributes['is_text'] = True
         options_attributes['surface_to_draw_on'] = "defineattributes"
         self.viewJSONButton.init(attributes=options_attributes)
@@ -54,41 +63,49 @@ class DefiningAttributes(State):
         self.closeButton = Option()
         options_attributes["rect_colour"] = 'blue'
         options_attributes["img_path"] = 'Close'
-        options_attributes["win_pos"] = [1300,900]
+        options_attributes["win_pos"] = [1600,900]
         options_attributes['is_text'] = True
         options_attributes['surface_to_draw_on'] = "defineattributes"
         self.closeButton.init(attributes=options_attributes)
 
 
-        self.keyText = Option()
-        options_attributes["rect_colour"] = 'blue'
-        options_attributes["img_path"] = 'Key'
-        options_attributes["win_pos"] = [400,125]
-        options_attributes['is_text'] = True
-        options_attributes['surface_to_draw_on'] = "defineattributes"
-        self.keyText.init(attributes=options_attributes)
+        # self.keyText = Option()
+        # options_attributes["rect_colour"] = 'blue'
+        # options_attributes["img_path"] = 'Key'
+        # options_attributes["win_pos"] = [400,125]
+        # options_attributes['is_text'] = True
+        # options_attributes['surface_to_draw_on'] = "defineattributes"
+        # self.keyText.init(attributes=options_attributes)
 
-        self.valueText = Option()
-        options_attributes["rect_colour"] = 'blue'
-        options_attributes["img_path"] = 'Value'
-        options_attributes["win_pos"] = [1200,125]
-        options_attributes['is_text'] = True
-        options_attributes['surface_to_draw_on'] = "defineattributes"
-        self.valueText.init(attributes=options_attributes)
+        # self.valueText = Option()
+        # options_attributes["rect_colour"] = 'blue'
+        # options_attributes["img_path"] = 'Value'
+        # options_attributes["win_pos"] = [1200,125]
+        # options_attributes['is_text'] = True
+        # options_attributes['surface_to_draw_on'] = "defineattributes"
+        # self.valueText.init(attributes=options_attributes)
 
         self.deleteKeyButton = Option()
         options_attributes["rect_colour"] = 'blue'
         options_attributes["img_path"] = 'Delete'
-        options_attributes["win_pos"] = [1600,900]
+        options_attributes["win_pos"] = [1300,900]
         options_attributes['is_text'] = True
         options_attributes['surface_to_draw_on'] = "defineattributes"
         self.deleteKeyButton.init(attributes=options_attributes)
+
+        self.typingButton = Option()
+        options_attributes["rect_colour"] = 'blue'
+        options_attributes["img_path"] = 'Typing'
+        options_attributes["win_pos"] = [700,900]
+        options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "defineattributes"
+        self.typingButton.init(attributes=options_attributes)
 
         State.__init__(self)
 
     def enter(self):
         self.current_choice = None
-        self.typingFor = None
+        self.currentAction = 'typing'
         self.kvPairs = self.parent_node.tilemap[self.parent_node.states['TILEMAP'].currentLayer][f"{self.parent_node.states['TILEMAP'].currentTilePos}"]
         
 
@@ -114,14 +131,19 @@ class DefiningAttributes(State):
         # fill windows
         gameScreen.windows['defineattributes'].win.fill((200,100,100))
 
+        # update action button
+        self.myActionButton.img_path = f'You are currently {self.currentAction}'
+
         # draw on windwos
         self.submitButton.update()
         self.viewJSONButton.update()
         self.closeButton.update()
-        self.valueText.update()
-        self.keyText.update()
+        # self.valueText.update()
+        # self.keyText.update()
         self.deleteKeyButton.update()
         self.currentPhrase.update()
+        self.typingButton.update()
+        self.myActionButton.update()
         
 
         # collision check with buttons
@@ -134,14 +156,17 @@ class DefiningAttributes(State):
         if self.closeButton.hurtbox.collidepoint(adjustedmousePos):
             self.current_choice = 'Close'
             
-        if self.valueText.hurtbox.collidepoint(adjustedmousePos):
-            self.current_choice = 'Value'
+        # if self.valueText.hurtbox.collidepoint(adjustedmousePos):
+        #     self.current_choice = 'Value'
 
-        if self.keyText.hurtbox.collidepoint(adjustedmousePos):
-            self.current_choice = 'Key'
+        # if self.keyText.hurtbox.collidepoint(adjustedmousePos):
+        #     self.current_choice = 'Key'
 
         if self.deleteKeyButton.hurtbox.collidepoint(adjustedmousePos):
             self.current_choice = 'Delete'
+
+        if self.typingButton.hurtbox.collidepoint(adjustedmousePos):
+            self.current_choice = 'Typing'
 
 
 
@@ -164,17 +189,26 @@ class DefiningAttributes(State):
 
         if event.type == pygame.KEYDOWN:
 
+            # when hit enter do smth diff dpeending on typing or deleting
             if event.key == pygame.K_RETURN:
 
-                if len(self.currentPhrase.img_path) > 1:
+                if self.currentAction == 'typing':
 
-                    self.process_entry()
+                    if len(self.currentPhrase.img_path) > 1:
+
+                        self.process_entry()
+
+                elif self.currentAction == 'deleting':
+
+                    if self.currentPhrase.img_path.lstrip().rstrip() in self.kvPairs:
+                        del self.kvPairs[self.currentPhrase.img_path.lstrip().rstrip()]
+                        self.currentPhrase.img_path = ' '
 
             elif event.key == pygame.K_BACKSPACE:
                 if len(self.currentPhrase.img_path) > 1:
                     self.currentPhrase.img_path = self.currentPhrase.img_path[:-1]
 
-            elif self.typingFor:
+            else:
                 
                 self.currentPhrase.img_path += event.unicode
 
@@ -194,9 +228,22 @@ class DefiningAttributes(State):
 
                     self.emit('TILEMAP')
 
-                if self.current_choice == 'Key':
+                if self.current_choice == 'viewJSON':
 
-                    self.typingFor = True
+                    print(self.kvPairs)
+
+                if self.current_choice == 'Delete':
+
+                    self.currentAction = 'deleting'
+
+                if self.current_choice == 'Typing':
+
+                    self.currentAction = 'typing'
+
+
+                # if self.current_choice == 'Key':
+
+                #     self.typingFor = True
 
                 # if self.current_choice == 'Value':
 

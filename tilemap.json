@@ -1,0 +1,364 @@
+{
+    "0": {
+        "(-128.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-160.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-64.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-96.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(0.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-96.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-96.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-32.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-64.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-32.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-32.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-64.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-128.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-64.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(0.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-32.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-96.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(96.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(32.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(32.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(0.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(0.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(64.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(64.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(32.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(32.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(64.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(96.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(96.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(96.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(128.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(128.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(128.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(128.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(64.0, 64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(64.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(32.0, 64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(0.0, 64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-64.0, 64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-96.0, 64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-32.0, 64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-128.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-128.0, 64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-160.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-160.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-160.0, 64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-192.0, 64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-192.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-192.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-192.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-192.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-160.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-128.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-128.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-96.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-64.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(-32.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(0.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(32.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(96.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(128.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(64.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(160.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(192.0, -96.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(160.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(160.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(192.0, -64.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(192.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(160.0, 0.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(192.0, -32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(192.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        },
+        "(160.0, 32.0)": {
+            "class": "BgTile",
+            "hurtbox_width": 23.0,
+            "direction": 0
+        }
+    }
+}

@@ -141,7 +141,6 @@ class AnimatedSprite():
         elif self.img_path not in SpriteCache:
             
             if not self.is_text:
-                print(self.img_path)
                 SpriteCache[self.img_path] = {'loaded_image':pygame.image.load(self.img_path).convert_alpha()}
                 self.image = SpriteCache[self.img_path]['loaded_image']
                 self.img_width = self.image.get_width()

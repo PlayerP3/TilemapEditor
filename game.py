@@ -1,4 +1,4 @@
-import pygame,random,os,string,numpy,math
+import pygame,random,os,string,numpy,math,json
 from pygame.math import Vector2
 from screen import Window
 from statemachine import StateMachine
@@ -36,8 +36,6 @@ class GameStateMachine(StateMachine):
 
         if self.state.done:
             self.transition_to_next_state()
-
-        print(self.tilemap)
 
 class Game(GameStateMachine):
 
@@ -160,6 +158,43 @@ class Game(GameStateMachine):
 
             for s in sprites:
                 s.draw_surface(position=s.hurtbox.topleft)
+
+    def save_tilemap(self):
+
+        with open('tilemap.json', 'w') as f:
+
+            # store all pos and layers
+            layerPos = []
+
+            # store layer and pos as kv pair
+            for layer,layerData in self.tilemap.items():
+
+                for pos,metadata in layerData.items():
+
+                    layerPos.append((layer,pos))
+
+            # go through kv pair and remove animated sprite class and ad vars you want
+            for lp in layerPos:
+
+                updateJSON = {}
+
+                layer = lp[0]
+                pos = lp[1]
+
+                sprite = self.tilemap[layer][pos]['AnimatedSprite']
+
+                # add variables of interest from the animated sprite class, can actuall use getattr to be more efficient and have a list of vars you want
+                updateJSON['hurtbox_width'] = sprite.hurtbox.width
+                updateJSON['direction'] = sprite.direction
+
+                self.tilemap[layer][pos].update(updateJSON)
+
+                del self.tilemap[layer][pos]['AnimatedSprite']
+
+
+                    
+
+            json.dump(self.tilemap, f,indent=4) 
             
 
 engine = Game()

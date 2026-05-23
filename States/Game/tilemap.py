@@ -9,6 +9,7 @@ from options import *
 from tiles import Tile,attributes
 from animatedsprite import AnimatedSprite
 
+
 class Tilemap(State):
 
     def __init__(self):
@@ -164,8 +165,6 @@ class Tilemap(State):
 
         if event.type == pygame.KEYDOWN:
 
-            print(f'Just Pressed {event.unicode}')
-
             if event.key == pygame.K_ESCAPE:
                 self.emit('QUIT')
 
@@ -180,6 +179,7 @@ class Tilemap(State):
 
             if event.key == pygame.K_r:
                 self.parent_node.currentSprite.direction += 90
+                self.parent_node.currentSprite.direction = self.parent_node.currentSprite.direction % 360
 
             if event.key == pygame.K_z:
                 gameScreen.windows['tilemap'].zoom += 1
