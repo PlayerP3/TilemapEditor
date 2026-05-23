@@ -17,7 +17,7 @@ def run():
     engine.currentSprite.vertice = 'topleft'
     engine.currentSprite.surface_to_draw_on = 'tilemap'
 
-    # set random image to current sprite to stop tilemap error
+    # set random image to current sprite to stop tilemap error before you pick a sprite for the first time
     engine.currentSprite.img_path = engine.states['PALETTE'].spriteOptions[engine.states['PALETTE'].myDirsOptions[0].img_path][0].img_path
     engine.states['PALETTE'].current_choice =  engine.currentSprite.img_path
 

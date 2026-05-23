@@ -1,0 +1,87 @@
+{
+    "0": {
+        "(160.0, -64.0)": {
+            "AnimatedSprite": {
+                "hurtbox_width": 23.0,
+                "hurtbox_height": 36.0,
+                "direction": 0,
+                "img_path": "/Users/Player3/Desktop/Zombies/Sprites/Miscellaneous/Floor/Floor.png"
+            },
+            "class": "BgTile"
+        },
+        "(32.0, -32.0)": {
+            "AnimatedSprite": {
+                "hurtbox_width": 23.0,
+                "hurtbox_height": 36.0,
+                "direction": 0,
+                "img_path": "/Users/Player3/Desktop/Zombies/Sprites/Miscellaneous/Floor/Floor.png"
+            },
+            "class": "BgTile"
+        },
+        "(-224.0, 0.0)": {
+            "AnimatedSprite": {
+                "hurtbox_width": 23.0,
+                "hurtbox_height": 36.0,
+                "direction": 0,
+                "img_path": "/Users/Player3/Desktop/Zombies/Sprites/Miscellaneous/Floor/Floor.png"
+            },
+            "class": "BgTile"
+        },
+        "(-96.0, -64.0)": {
+            "AnimatedSprite": {
+                "hurtbox_width": 23.0,
+                "hurtbox_height": 36.0,
+                "direction": 0,
+                "img_path": "/Users/Player3/Desktop/Zombies/Sprites/Miscellaneous/Floor/Floor.png"
+            },
+            "class": "BgTile"
+        },
+        "(-96.0, -96.0)": {
+            "AnimatedSprite": {
+                "hurtbox_width": 23.0,
+                "hurtbox_height": 36.0,
+                "direction": 0,
+                "img_path": "/Users/Player3/Desktop/Zombies/Sprites/Miscellaneous/Floor/Floor.png"
+            },
+            "class": "BgTile"
+        },
+        "(-96.0, -32.0)": {
+            "AnimatedSprite": {
+                "hurtbox_width": 23.0,
+                "hurtbox_height": 36.0,
+                "direction": 0,
+                "img_path": "/Users/Player3/Desktop/Zombies/Sprites/Miscellaneous/Floor/Floor.png"
+            },
+            "class": "BgTile"
+        },
+        "(-96.0, 32.0)": {
+            "AnimatedSprite": {
+                "hurtbox_width": 23.0,
+                "hurtbox_height": 36.0,
+                "direction": 0,
+                "img_path": "/Users/Player3/Desktop/Zombies/Sprites/Miscellaneous/Floor/Floor.png"
+            },
+            "class": "BgTile"
+        },
+        "(32.0, 64.0)": {
+            "AnimatedSprite": {
+                "hurtbox_width": 23.0,
+                "hurtbox_height": 36.0,
+                "direction": 0,
+                "img_path": "/Users/Player3/Desktop/Zombies/Sprites/Miscellaneous/Floor/Floor.png"
+            },
+            "class": "MoveableObject",
+            "cost": 10,
+            "ammocost": 10000
+        },
+        "(96.0, 0.0)": {
+            "AnimatedSprite": {
+                "hurtbox_width": 23.0,
+                "hurtbox_height": 36.0,
+                "direction": 0,
+                "img_path": "/Users/Player3/Desktop/Zombies/Sprites/Miscellaneous/Floor/Floor.png"
+            },
+            "class": "BgTile"
+        }
+    }
+}

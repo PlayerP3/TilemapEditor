@@ -31,3 +31,11 @@ y = 'cost:0'
 print(y.split(':'))
 
 print(180%360)
+
+
+c = {}
+
+c[1] = {}
+c[1][2]= {}
+
+print(c)

@@ -106,7 +106,7 @@ class DefiningAttributes(State):
     def enter(self):
         self.current_choice = None
         self.currentAction = 'typing'
-        self.kvPairs = self.parent_node.tilemap[self.parent_node.states['TILEMAP'].currentLayer][f"{self.parent_node.states['TILEMAP'].currentTilePos}"]
+        self.kvPairs = self.parent_node.tilemap[f"{self.parent_node.states['TILEMAP'].currentLayer}"][f"{self.parent_node.states['TILEMAP'].currentTilePos}"]
         
 
     def update(self):
@@ -224,7 +224,7 @@ class DefiningAttributes(State):
                 if self.current_choice == 'Submit':
                     
                     # update json meta data for tile
-                    self.parent_node.tilemap[self.parent_node.states['TILEMAP'].currentLayer][f"{self.parent_node.states['TILEMAP'].currentTilePos}"] = self.kvPairs
+                    self.parent_node.tilemap[f"{self.parent_node.states['TILEMAP'].currentLayer}"][f"{self.parent_node.states['TILEMAP'].currentTilePos}"] = self.kvPairs
 
                     self.emit('TILEMAP')
 

@@ -120,6 +120,8 @@ class PaletteButton(State):
         self.parent_node.states['TILEMAPBUTTON'].DownButton.update()
         self.parent_node.states['TILEMAPBUTTON'].LeftButton.update()
         self.parent_node.states['TILEMAPBUTTON'].RightButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].SaveButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].BackButton.update()
 
         # draw tilempa rects
         for tile in self.parent_node.states['TILEMAP'].tiles:

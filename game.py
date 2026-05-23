@@ -1,15 +1,15 @@
-import pygame,random,os,string,numpy,math,json
+import pygame,random,os,string,numpy,math,json,copy,ast
 from pygame.math import Vector2
 from screen import Window
 from statemachine import StateMachine
-from States.Game.gameplay import Gameplay
+from States.Game.start import Start
 from States.Game.quit import Quit
 from States.Game.palettebutton import PaletteButton
 from States.Game.palette import Palette
 from States.Game.tilemap import Tilemap
 from States.Game.tilemapbutton import TilemapButton
 from States.Game.definingattributes import DefiningAttributes
-
+from animatedsprite import AnimatedSprite
 
 # from States.Game import gameover
 from eventsystem import eventprocessor
@@ -49,6 +49,9 @@ class Game(GameStateMachine):
         self.FPS = 60
         self.delta = 1/self.FPS
 
+        # have tilemap name
+        self.tilemap_name = 'tilemap.json'
+
 
         # set palette
         self.palette_state = 'dir'
@@ -75,7 +78,7 @@ class Game(GameStateMachine):
         self.hud = None
 
         # init state machine
-        self.states = {'GAMEPLAY':Gameplay(),
+        self.states = {'START':Start(),
                        'QUIT':Quit(),
                        'PALETTEBUTTON':PaletteButton(),
                        'PALETTE':Palette(),
@@ -87,7 +90,7 @@ class Game(GameStateMachine):
         for x in self.states:
             self.states[x].parent_node = self
         
-        self.state = self.states['PALETTE']
+        self.state = self.states['START']
 
 
         self.tile_size = 32
@@ -161,7 +164,13 @@ class Game(GameStateMachine):
 
     def save_tilemap(self):
 
-        with open('tilemap.json', 'w') as f:
+        with open(f'tilemaps/{self.tilemap_name}', 'w') as f:
+
+            # mycopy = copy.deepcopy(self.tilemap)
+
+            # print(mycopy)
+            myCopy = {}
+
 
             # store all pos and layers
             layerPos = []
@@ -173,6 +182,7 @@ class Game(GameStateMachine):
 
                     layerPos.append((layer,pos))
 
+
             # go through kv pair and remove animated sprite class and ad vars you want
             for lp in layerPos:
 
@@ -181,20 +191,93 @@ class Game(GameStateMachine):
                 layer = lp[0]
                 pos = lp[1]
 
+                # get sprite obj
                 sprite = self.tilemap[layer][pos]['AnimatedSprite']
 
                 # add variables of interest from the animated sprite class, can actuall use getattr to be more efficient and have a list of vars you want
                 updateJSON['hurtbox_width'] = sprite.hurtbox.width
+                updateJSON['hurtbox_height'] = sprite.hurtbox.height
                 updateJSON['direction'] = sprite.direction
+                updateJSON['img_path'] = sprite.img_path
 
-                self.tilemap[layer][pos].update(updateJSON)
+                 # start building copy
+                if layer not in myCopy:
+                    myCopy[layer] = {} 
+                
+                if pos not in myCopy[layer]:
+                    myCopy[layer][pos] = {}
 
-                del self.tilemap[layer][pos]['AnimatedSprite']
+                # add animated sprite info to myCopy
+                myCopy[layer][pos]['AnimatedSprite'] = updateJSON
+
+                # add other info from tilemap
+                for k,v in self.tilemap[layer][pos].items():
+
+                    if k == 'AnimatedSprite':
+                        continue
+
+                    myCopy[layer][pos][k] = v
+
+            json.dump(myCopy, f,indent=4)
+
+    def load_tilemap(self):
+
+        with open(f'tilemaps/{self.tilemap_name}', 'r') as f:
+            
+            params = json.load(f)
+        
+
+        self.tilemap = {}
 
 
-                    
+        # store all pos and layers
+        layerPos = []
 
-            json.dump(self.tilemap, f,indent=4) 
+        # store layer and pos as kv pair
+        for layer,layerData in params.items():
+
+            for pos,metadata in layerData.items():
+
+                layerPos.append((layer,pos))
+
+        # go through kv pair and remove animated sprite class and ad vars you want
+        for lp in layerPos:
+
+            updateJSON = {}
+
+            layer = lp[0]
+            pos = lp[1]
+
+            # get sprite obj
+            spriteinit = params[layer][pos]['AnimatedSprite']
+
+            # add variables of interest from the animated sprite class, can actuall use getattr to be more efficient and have a list of vars you want
+            sprite = AnimatedSprite()
+            for att,val in spriteinit.items():
+                setattr(sprite,att,val)
+
+            sprite.surface_to_draw_on = 'tilemap'
+            sprite.vertice = 'topleft'
+            sprite.hurtbox.topleft = ast.literal_eval(pos)
+            sprite.zlayer_drawing = int(layer)
+
+            # start building copy
+            if layer not in self.tilemap:
+                self.tilemap[layer] = {} 
+            
+            if pos not in self.tilemap[layer]:
+                self.tilemap[layer][pos] = {}
+
+
+            # now we can delete Animated sprite key val
+            del params[layer][pos]['AnimatedSprite']
+
+            # add animated sprite info to myCopy
+            self.tilemap[layer][pos] = params[layer][pos]
+
+            self.tilemap[layer][pos]['AnimatedSprite'] = sprite
+
+        
             
 
 engine = Game()

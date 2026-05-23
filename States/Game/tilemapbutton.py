@@ -56,11 +56,20 @@ class TilemapButton(State):
         self.SaveButton = Option()
         options_attributes["rect_colour"] = 'blue'
         options_attributes["img_path"] = 'Save'
-        options_attributes["win_pos"] = [150,150]
+        options_attributes["win_pos"] = [150,350]
         options_attributes['is_text'] = True
         options_attributes['surface_to_draw_on'] = "tilemapbuttons"
 
         self.SaveButton.init(attributes=options_attributes)
+
+        self.BackButton = Option()
+        options_attributes["rect_colour"] = 'blue'
+        options_attributes["img_path"] = 'Back'
+        options_attributes["win_pos"] = [350,50]
+        options_attributes['is_text'] = True
+        options_attributes['surface_to_draw_on'] = "tilemapbuttons"
+
+        self.BackButton.init(attributes=options_attributes)
 
 
         State.__init__(self)
@@ -119,6 +128,7 @@ class TilemapButton(State):
         self.LeftButton.update()
         self.RightButton.update()
         self.SaveButton.update()
+        self.BackButton.update()
 
 
          # collision check with buttons
@@ -133,6 +143,12 @@ class TilemapButton(State):
             
         elif self.RightButton.hurtbox.collidepoint(adjustedmousePos):
             self.current_choice = 'Right'
+
+        elif self.SaveButton.hurtbox.collidepoint(adjustedmousePos):
+            self.current_choice = 'Save'
+
+        elif self.BackButton.hurtbox.collidepoint(adjustedmousePos):
+            self.current_choice = 'Back'
 
 
         # draw tilempa rects
@@ -207,6 +223,10 @@ class TilemapButton(State):
 
                 elif self.current_choice == 'Save':
 
-                    # self.parent_node.save_tilemap()
+                    self.parent_node.save_tilemap()
 
-                    pass               
+                elif self.current_choice == 'Back':
+
+                    self.emit('START')
+
+                   

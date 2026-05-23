@@ -132,6 +132,8 @@ class Tilemap(State):
         self.parent_node.states['TILEMAPBUTTON'].DownButton.update()
         self.parent_node.states['TILEMAPBUTTON'].LeftButton.update()
         self.parent_node.states['TILEMAPBUTTON'].RightButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].SaveButton.update()
+        self.parent_node.states['TILEMAPBUTTON'].BackButton.update()
 
         # render everything
         renderer.draw_objects()
@@ -192,9 +194,9 @@ class Tilemap(State):
             if event.key == pygame.K_SPACE:
 
                 # givne layer and pos, if tile placed there 
-                if self.currentLayer in self.parent_node.tilemap:
+                if f"{self.currentLayer}" in self.parent_node.tilemap:
 
-                    if f"{self.currentTilePos}" in self.parent_node.tilemap[self.currentLayer]:
+                    if f"{self.currentTilePos}" in self.parent_node.tilemap[f"{self.currentLayer}"]:
 
                         self.emit('DEFININGATTRIBUTES')
 
@@ -214,15 +216,16 @@ class Tilemap(State):
     
     def add_tile(self):
 
-        if self.currentLayer not in self.parent_node.tilemap:
-            self.parent_node.tilemap[self.currentLayer] = {}
+        if f"{self.currentLayer}" not in self.parent_node.tilemap:
+            self.parent_node.tilemap[f"{self.currentLayer}"] = {}
 
-        if f"{self.currentTilePos}" not in self.parent_node.tilemap[self.currentLayer]:
 
-            self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"] = {}
+        if f"{self.currentTilePos}" not in self.parent_node.tilemap[f"{self.currentLayer}"]:
+
+            self.parent_node.tilemap[f"{self.currentLayer}"][f"{self.currentTilePos}"] = {}
 
         # if there is already a tile at that location
-        if self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"]:
+        if self.parent_node.tilemap[f"{self.currentLayer}"][f"{self.currentTilePos}"]:
             return
         
 
@@ -237,19 +240,19 @@ class Tilemap(State):
         newSprite.surface_to_draw_on = 'tilemap'
 
         # add tile and its stats 
-        self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"] = {'AnimatedSprite':newSprite,'class':'BgTile'}
+        self.parent_node.tilemap[f"{self.currentLayer}"][f"{self.currentTilePos}"] = {'AnimatedSprite':newSprite,'class':'BgTile'}
 
     def remove_tile(self):
 
-        if self.currentLayer in self.parent_node.tilemap:
+        if f"{self.currentLayer}" in self.parent_node.tilemap:
            
-            if f"{self.currentTilePos}" in self.parent_node.tilemap[self.currentLayer]:
+            if f"{self.currentTilePos}" in self.parent_node.tilemap[f"{self.currentLayer}"]:
 
                 # if there is already a tile at that location
-                del self.parent_node.tilemap[self.currentLayer][f"{self.currentTilePos}"]
+                del self.parent_node.tilemap[f"{self.currentLayer}"][f"{self.currentTilePos}"]
                 
-            if not self.parent_node.tilemap[self.currentLayer]:
-                del self.parent_node.tilemap[self.currentLayer]
+            if not self.parent_node.tilemap[f"{self.currentLayer}"]:
+                del self.parent_node.tilemap[f"{self.currentLayer}"]
 
     def draw_layer_number(self):
         self.currentLayerText.img_path = f'Current Layer = {self.currentLayer}'
